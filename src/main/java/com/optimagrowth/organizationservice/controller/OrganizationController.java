@@ -11,20 +11,19 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 
 @RestController
-@RequestMapping(value = "v1/organization")
+@RequestMapping("v1/organization")
 @AllArgsConstructor
 public class OrganizationController {
 
     private OrganizationService service;
 
-
-    @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET)
+    @GetMapping(value = "/{organizationId}")
     @RolesAllowed({"ADMIN","USER"})
     public ResponseEntity<Organization> getOrganization(@PathVariable("organizationId") String organizationId) {
         return ResponseEntity.ok(service.findById(organizationId));
     }
 
-    @RequestMapping(value = "/{organizationId}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{organizationId}")
     @RolesAllowed({"ADMIN","USER"})
     public void updateOrganization(@PathVariable("organizationId") String id,
                                    @RequestBody Organization organization) {
@@ -37,7 +36,7 @@ public class OrganizationController {
         return ResponseEntity.ok(service.create(organization));
     }
 
-    @RequestMapping(value = "/{organizationId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{organizationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RolesAllowed({"ADMIN"})
     public void deleteOrganization(@PathVariable("organizationId") String id,
