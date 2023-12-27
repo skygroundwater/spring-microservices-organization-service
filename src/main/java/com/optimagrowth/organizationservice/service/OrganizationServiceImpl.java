@@ -1,5 +1,7 @@
 package com.optimagrowth.organizationservice.service;
 
+import com.optimagrowth.organizationservice.events.model.ActionEnum;
+import com.optimagrowth.organizationservice.events.source.SimpleSourceBean;
 import com.optimagrowth.organizationservice.model.Organization;
 import com.optimagrowth.organizationservice.repository.OrganizationRepository;
 import lombok.AllArgsConstructor;
@@ -12,7 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrganizationServiceImpl implements OrganizationService {
 
-    private OrganizationRepository repository;
+    private final OrganizationRepository repository;
+
+    private final SimpleSourceBean sourceBean;
 
     @Override
     public Organization findById(String organizationId) {
@@ -24,6 +28,9 @@ public class OrganizationServiceImpl implements OrganizationService {
     public Organization create(Organization organization) {
         organization.setId(UUID.randomUUID().toString());
         organization = repository.save(organization);
+        sourceBean.publicOrganizationChange(
+                ActionEnum.CREATED.name(),
+                organization.getId());
         return organization;
     }
 

@@ -6,6 +6,7 @@ spring:
     name: ${CONFIGSERVER_NAME}
   application:
     name: ${APPLICATION_NAME}
+
 management:
   endpoints:
     web:
